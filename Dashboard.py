@@ -179,10 +179,12 @@ with aba1:
             coberturas_com_meta.append({
                 'nome': cobertura,
                 'meta': 90.0,  # Meta específica para BCG e Rotavírus
-                'cor_critico': '#ff4444',  # Vermelho: 0-40%
-                'cor_baixo': '#ff9900',    # Laranja: 41-70%
-                'cor_moderado': '#ffdd00', # Amarelo: 71% até a meta (90%)
-                'cor_excelente': '#44dd44' # Verde: > meta (>90%)
+                'cor_muito_critico': '#790E18',  # Rubi: 0-20%
+                'cor_critico': '#ff4444',  # Vermelho: 21-40%
+                'cor_baixo': '#ff9900',    # Laranja: 41-60%
+                'cor_moderado': '#ffdd00', # Amarelo: 61-80%
+                'cor_excelente': '#44dd44', # Verde: >80%
+                'cor_otima': '#000099'     # Azul: Meta ótima (90%)
             })      
         elif cobertura in   ['Hepatite B (< 30 dias)',  'Hepatite B',   'Hepatite A Infantil',  
                              'DTP', 'Febre Amarela', 'Polio Injetável (VIP)', 
@@ -195,10 +197,12 @@ with aba1:
             coberturas_com_meta.append({
                 'nome': cobertura,
                 'meta': 95.0,  # Meta padrão de 95% para todas as coberturas
-                'cor_critico': '#ff4444',  # Vermelho: 0-40%
-                'cor_baixo': '#ff9900',    # Laranja: 41-70%
-                'cor_moderado': '#ffdd00', # Amarelo: 71% até a meta (95%)
-                'cor_excelente': '#44dd44' # Verde: > meta (>95%)
+                'cor_muito_critico': '#790E18',  # Rubi: 0-20%
+                'cor_critico': '#ff4444',  # Vermelho: 21-40%
+                'cor_baixo': '#ff9900',    # Laranja: 41-60%
+                'cor_moderado': '#ffdd00', # Amarelo: 61-80%
+                'cor_excelente': '#44dd44', # Verde: >80%
+                'cor_otima': '#000099'     # Azul: Meta ótima (95%)
             })
         
     # Função helper para buscar cobertura exata na lista
@@ -217,22 +221,30 @@ with aba1:
         
         if meta_info:
             meta = meta_info['meta']
-            if percentual <= 40:
+            if percentual <= 20:
+                return meta_info['cor_muito_critico']
+            elif percentual <= 40:
                 return meta_info['cor_critico']
-            elif percentual <= 70:
+            elif percentual <= 60:
                 return meta_info['cor_baixo']
-            elif percentual <= meta:
+            elif percentual <= 80:
                 return meta_info['cor_moderado']
+            elif percentual >= meta:
+                return meta_info['cor_otima']  # Azul quando atinge a meta
             else:
                 return meta_info['cor_excelente']
         else:
             # Cores padrão se não encontrar a meta
-            if percentual <= 40:
+            if percentual <= 20:
+                return "#790E18"
+            elif percentual <= 40:
                 return "#ff4444"
-            elif percentual <= 70:
+            elif percentual <= 60:
                 return "#ff9900"
-            elif percentual <= 95:
+            elif percentual <= 80:
                 return "#ffdd00"
+            elif percentual >= 95:
+                return "#000099"
             else:
                 return "#44dd44"
     
@@ -265,7 +277,14 @@ with aba1:
             title=f'Cobertura de {nome_cobertura} por Estado',
             labels={'COBERTURA': 'Cobertura (%)', 'sg_uf': 'Estado'},
             color='COBERTURA',
-            color_continuous_scale=['#ff4444', '#ff9900', '#ffdd00', '#44dd44'],
+            color_continuous_scale=[
+                [0, '#790E18'],    # Rubi (0%)
+                [0.2, '#ff4444'],  # Vermelho (20%)
+                [0.4, '#ff9900'],  # Laranja (40%)
+                [0.6, '#ffdd00'],  # Amarelo (60%)
+                [0.8, '#44dd44'],  # Verde (80%)
+                [1, '#000099']     # Azul (100%/meta)
+            ],
             range_color=[0, 100]
         )
         
@@ -302,12 +321,16 @@ with aba1:
         
         # Função para determinar cor baseada no percentual
         def get_cor_card(percentual):
-            if percentual <= 40:
+            if percentual <= 20:
+                return "#790E18"  # Rubi
+            elif percentual <= 40:
                 return "#ff4444"  # Vermelho
-            elif percentual <= 70:
+            elif percentual <= 60:
                 return "#ff9900"  # Laranja
-            elif percentual <= 95:
+            elif percentual <= 80:
                 return "#ffdd00"  # Amarelo
+            elif percentual >= 95:
+                return "#000099"  # Azul (meta ótima)
             else:
                 return "#44dd44"  # Verde
         
@@ -688,37 +711,53 @@ with aba1:
     # Legenda de cores
     st.markdown("---")
     st.subheader("Legenda de Cobertura")
-    col_leg1, col_leg2, col_leg3, col_leg4 = st.columns(4)
+    col_leg1, col_leg2, col_leg3, col_leg4, col_leg5, col_leg6 = st.columns(6)
     
     with col_leg1:
         st.markdown("""
-            <div style='background-color: #ff4444; padding: 15px; border-radius: 8px; text-align: center;'>
-                <p style='color: white; font-weight: bold; margin: 0;'>0 - 40%</p>
-                <p style='color: white; font-size: 12px; margin: 5px 0;'>Crítico</p>
+            <div style='background-color: #790E18; padding: 15px; border-radius: 8px; text-align: center;'>
+                <p style='color: white; font-weight: bold; margin: 0;'>0 - 20%</p>
+                <p style='color: white; font-size: 12px; margin: 5px 0;'>Muito Crítico</p>
             </div>
         """, unsafe_allow_html=True)
     
     with col_leg2:
         st.markdown("""
-            <div style='background-color: #ff9900; padding: 15px; border-radius: 8px; text-align: center;'>
-                <p style='color: white; font-weight: bold; margin: 0;'>41 - 70%</p>
-                <p style='color: white; font-size: 12px; margin: 5px 0;'>Baixo</p>
+            <div style='background-color: #ff4444; padding: 15px; border-radius: 8px; text-align: center;'>
+                <p style='color: white; font-weight: bold; margin: 0;'>21 - 40%</p>
+                <p style='color: white; font-size: 12px; margin: 5px 0;'>Crítico</p>
             </div>
         """, unsafe_allow_html=True)
     
     with col_leg3:
         st.markdown("""
-            <div style='background-color: #ffdd00; padding: 15px; border-radius: 8px; text-align: center;'>
-                <p style='color: black; font-weight: bold; margin: 0;'>71 Até a meta</p>
-                <p style='color: black; font-size: 12px; margin: 5px 0;'>Moderado</p>
+            <div style='background-color: #ff9900; padding: 15px; border-radius: 8px; text-align: center;'>
+                <p style='color: white; font-weight: bold; margin: 0;'>41 - 60%</p>
+                <p style='color: white; font-size: 12px; margin: 5px 0;'>Baixo</p>
             </div>
         """, unsafe_allow_html=True)
     
     with col_leg4:
         st.markdown("""
+            <div style='background-color: #ffdd00; padding: 15px; border-radius: 8px; text-align: center;'>
+                <p style='color: black; font-weight: bold; margin: 0;'>61 - 80%</p>
+                <p style='color: black; font-size: 12px; margin: 5px 0;'>Moderado</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col_leg5:
+        st.markdown("""
             <div style='background-color: #44dd44; padding: 15px; border-radius: 8px; text-align: center;'>
-                <p style='color: white; font-weight: bold; margin: 0;'>> meta</p>
+                <p style='color: white; font-weight: bold; margin: 0;'>> 80%</p>
                 <p style='color: white; font-size: 12px; margin: 5px 0;'>Excelente</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col_leg6:
+        st.markdown("""
+            <div style='background-color: #000099; padding: 15px; border-radius: 8px; text-align: center;'>
+                <p style='color: white; font-weight: bold; margin: 0;'>Meta Ótima</p>
+                <p style='color: white; font-size: 12px; margin: 5px 0;'>≥ 90% ou 95%</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -775,11 +814,13 @@ with aba2:
                     'QT_POPULACAO': 'População'
                 },
                 color_continuous_scale=[
-                    [0, '#ff4444'],      # Vermelho (0%)
+                    [0, '#790E18'],      # Rubi (0%)
+                    [0.2, '#ff4444'],    # Vermelho (20%)
                     [0.4, '#ff9900'],    # Laranja (40%)
-                    [0.7, '#ffdd00'],    # Amarelo (70%)
-                    [meta_mapa/100, '#44dd44'],  # Verde (meta)
-                    [1, '#00aa00']       # Verde escuro (100%)
+                    [0.6, '#ffdd00'],    # Amarelo (60%)
+                    [0.8, '#44dd44'],    # Verde (80%)
+                    [meta_mapa/100, '#000099'],  # Azul (meta)
+                    [1, '#000099']       # Azul (100%)
                 ],
                 range_color=[0, 110],
                 geojson="https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/brazil-states.geojson",
@@ -1071,11 +1112,13 @@ with aba4:
                 text='COBERTURA',
                 color='COBERTURA',
                 color_continuous_scale=[
-                    [0, '#ff4444'],      # Vermelho para 0%
+                    [0, '#790E18'],      # Rubi para 0%
+                    [0.2, '#ff4444'],    # Vermelho para 20%
                     [0.4, '#ff9900'],    # Laranja para 40%
-                    [0.7, '#ffdd00'],    # Amarelo para 70%
-                    [meta_valor/100, '#ffdd00'],  # Amarelo até a meta
-                    [1, '#44dd44']       # Verde acima da meta
+                    [0.6, '#ffdd00'],    # Amarelo para 60%
+                    [0.8, '#44dd44'],    # Verde para 80%
+                    [meta_valor/100, '#000099'],  # Azul na meta
+                    [1, '#000099']       # Azul acima da meta
                 ],
                 range_color=[0, 100]
             )
