@@ -29,8 +29,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Carregar dados do arquivo CSV local
-data = pd.read_csv("dados/residencia.csv", sep=';')
+# Carregar dados do arquivo ZIP
+data = pd.read_csv("dados/residencia.zip", sep=';', compression='zip')
 
 # Carregar tabela de estados
 estados_df = pd.read_csv("dados/estados_brasil.csv", dtype=str)
