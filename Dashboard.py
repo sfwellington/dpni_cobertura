@@ -393,53 +393,27 @@ with aba1:
                 return "#44dd44"  # Verde
         
         # Definir as coberturas buscando da lista disponível
-        cobertura_hepb_nome = buscar_cobertura(coberturas_disponiveis, 'Hepatite B')
-        cobertura_dtp_nome = buscar_cobertura(coberturas_disponiveis, 'DTP')
         cobertura_fa_nome = buscar_cobertura(coberturas_disponiveis, 'Febre Amarela')
         cobertura_vip_nome = buscar_cobertura(coberturas_disponiveis, 'Polio Injetável (VIP)')
         cobertura_pneumo_nome = buscar_cobertura(coberturas_disponiveis, 'Pneumo 10')
         cobertura_meningo_nome = buscar_cobertura(coberturas_disponiveis, 'Meningo C')
         cobertura_penta_nome = buscar_cobertura(coberturas_disponiveis, 'Penta (DTP/HepB/Hib)')
         cobertura_rota_nome = buscar_cobertura(coberturas_disponiveis, 'Rotavírus')
-        cobertura_covid_nome = buscar_cobertura(coberturas_disponiveis, 'COVID')
+
         
         # Calcular coberturas
-        cobertura_hepb = calcular_cobertura(data_agrupado, cobertura_hepb_nome)
-        cobertura_dtp = calcular_cobertura(data_agrupado, cobertura_dtp_nome)
         cobertura_fa = calcular_cobertura(data_agrupado, cobertura_fa_nome)
         cobertura_vip = calcular_cobertura(data_agrupado, cobertura_vip_nome)
         cobertura_pneumo = calcular_cobertura(data_agrupado, cobertura_pneumo_nome)
         cobertura_meningo = calcular_cobertura(data_agrupado, cobertura_meningo_nome)
         cobertura_penta = calcular_cobertura(data_agrupado, cobertura_penta_nome)
         cobertura_rota = calcular_cobertura(data_agrupado, cobertura_rota_nome)
-        cobertura_covid = calcular_cobertura(data_agrupado, cobertura_covid_nome)
+
         
         # Linha 1: 4 colunas
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            cor_hepb = get_cor_por_meta(cobertura_hepb_nome, cobertura_hepb)
-            meta_hepb = get_meta_cobertura(cobertura_hepb_nome)
-            hint_hepb = f"A meta ótima de cobertura dessa vacina é de {f'{meta_hepb:.1f}'.replace('.', ',')}%\n{cobertura_hepb_nome}: {f'{cobertura_hepb:.2f}'.replace('.', ',')}%"
-            st.markdown(f"""
-                <div title="{hint_hepb}" style='background-color: {cor_hepb}; padding: 12px; border-radius: 8px; text-align: center; cursor: help;'>
-                    <h4 style='color: white; margin: 0; font-size: 13px;'>{cobertura_hepb_nome}</h4>
-                    <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_hepb:.2f}'.replace('.', ',')}%</p>
-                </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            cor_dtp = get_cor_por_meta(cobertura_dtp_nome, cobertura_dtp)
-            meta_dtp = get_meta_cobertura(cobertura_dtp_nome)
-            hint_dtp = f"A meta ótima de cobertura dessa vacina é de {f'{meta_dtp:.1f}'.replace('.', ',')}%\n{cobertura_dtp_nome}: {f'{cobertura_dtp:.2f}'.replace('.', ',')}%"
-            st.markdown(f"""
-                <div title="{hint_dtp}" style='background-color: {cor_dtp}; padding: 12px; border-radius: 8px; text-align: center; cursor: help;'>
-                    <h4 style='color: white; margin: 0; font-size: 13px;'>{cobertura_dtp_nome}</h4>
-                    <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_dtp:.2f}'.replace('.', ',')}%</p>
-                </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
             cor_fa = get_cor_por_meta(cobertura_fa_nome, cobertura_fa)
             meta_fa = get_meta_cobertura(cobertura_fa_nome)
             hint_fa = f"A meta ótima de cobertura dessa vacina é de {f'{meta_fa:.1f}'.replace('.', ',')}%\n{cobertura_fa_nome}: {f'{cobertura_fa:.2f}'.replace('.', ',')}%"
@@ -449,8 +423,8 @@ with aba1:
                     <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_fa:.2f}'.replace('.', ',')}%</p>
                 </div>
             """, unsafe_allow_html=True)
-        
-        with col4:
+
+        with col2:
             cor_vip = get_cor_por_meta(cobertura_vip_nome, cobertura_vip)
             meta_vip = get_meta_cobertura(cobertura_vip_nome)
             hint_vip = f"A meta ótima de cobertura dessa vacina é de {f'{meta_vip:.1f}'.replace('.', ',')}%\n{cobertura_vip_nome}: {f'{cobertura_vip:.2f}'.replace('.', ',')}%"
@@ -459,12 +433,8 @@ with aba1:
                     <h4 style='color: white; margin: 0; font-size: 13px;'>{cobertura_vip_nome}</h4>
                     <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_vip:.2f}'.replace('.', ',')}%</p>
                 </div>
-            """, unsafe_allow_html=True)
-        st.write("")
-        # Linha 2: 4 colunas
-        col5, col6, col7, col8 = st.columns(4)
-        
-        with col5:
+            """, unsafe_allow_html=True)        
+        with col3:
             cor_pneumo = get_cor_por_meta(cobertura_pneumo_nome, cobertura_pneumo)
             meta_pneumo = get_meta_cobertura(cobertura_pneumo_nome)
             hint_pneumo = f"A meta ótima de cobertura dessa vacina é de {f'{meta_pneumo:.1f}'.replace('.', ',')}%\n{cobertura_pneumo_nome}: {f'{cobertura_pneumo:.2f}'.replace('.', ',')}%"
@@ -474,8 +444,8 @@ with aba1:
                     <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_pneumo:.2f}'.replace('.', ',')}%</p>
                 </div>
             """, unsafe_allow_html=True)
-        
-        with col6:
+       
+        with col4:
             cor_meningo = get_cor_por_meta(cobertura_meningo_nome, cobertura_meningo)
             meta_meningo = get_meta_cobertura(cobertura_meningo_nome)
             hint_meningo = f"A meta ótima de cobertura dessa vacina é de {f'{meta_meningo:.1f}'.replace('.', ',')}%\n{cobertura_meningo_nome}: {f'{cobertura_meningo:.2f}'.replace('.', ',')}%"
@@ -485,8 +455,12 @@ with aba1:
                     <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_meningo:.2f}'.replace('.', ',')}%</p>
                 </div>
             """, unsafe_allow_html=True)
+
+        st.write("")
+        # Linha 2: 4 colunas
+        col5, col6, col7, col8 = st.columns(4)
         
-        with col7:
+        with col6:
             cor_penta = get_cor_por_meta(cobertura_penta_nome, cobertura_penta)
             meta_penta = get_meta_cobertura(cobertura_penta_nome)
             hint_penta = f"A meta ótima de cobertura dessa vacina é de {f'{meta_penta:.1f}'.replace('.', ',')}%\n{cobertura_penta_nome}: {f'{cobertura_penta:.2f}'.replace('.', ',')}%"
@@ -497,7 +471,7 @@ with aba1:
                 </div>
             """, unsafe_allow_html=True)
         
-        with col8:
+        with col7:
             cor_rota = get_cor_por_meta(cobertura_rota_nome, cobertura_rota)
             meta_rota = get_meta_cobertura(cobertura_rota_nome)
             hint_rota = f"A meta ótima de cobertura dessa vacina é de {f'{meta_rota:.1f}'.replace('.', ',')}%\n{cobertura_rota_nome}: {f'{cobertura_rota:.2f}'.replace('.', ',')}%"
@@ -507,20 +481,7 @@ with aba1:
                     <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_rota:.2f}'.replace('.', ',')}%</p>
                 </div>
             """, unsafe_allow_html=True)
-        st.write("")
-        # Linha 3: card COVID centralizado
-        col_esq, col_centro, col_dir = st.columns([1.5, 1, 1.5])
-        with col_centro:
-            cor_covid = get_cor_por_meta(cobertura_covid_nome, cobertura_covid)
-            meta_covid = get_meta_cobertura(cobertura_covid_nome)
-            hint_covid = f"A meta ótima de cobertura dessa vacina é de {f'{meta_covid:.1f}'.replace('.', ',')}%\n{cobertura_covid_nome}: {f'{cobertura_covid:.2f}'.replace('.', ',')}%"
-            st.markdown(f"""
-                <div title="{hint_covid}" style='background-color: {cor_covid}; padding: 12px; border-radius: 8px; text-align: center; cursor: help;'>
-                    <h4 style='color: white; margin: 0; font-size: 13px;'>{cobertura_covid_nome}</h4>
-                    <p style='color: white; font-size: 20px; font-weight: bold; margin: 6px 0;'>{f'{cobertura_covid:.2f}'.replace('.', ',')}%</p>
-                </div>
-            """, unsafe_allow_html=True)
-    
+            
         st.write("")
     
     # Expander 3: 1 ano de idade
